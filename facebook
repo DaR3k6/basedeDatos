@@ -1,0 +1,78 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
+  `nombreUsuario1` VARCHAR(150) NOT NULL,
+  `nombreUsuario2` VARCHAR(150) NOT NULL,
+  `apellidoUsuario1` VARCHAR(150) NOT NULL,
+  `apellidoUsuario2` VARCHAR(150) NOT NULL,
+  `emailUsuario` VARCHAR(150) NOT NULL,
+  `telefonoUsuario` INT NOT NULL,
+  `claveUsuario` VARCHAR(150) NOT NULL,
+  `fechaNace` DATE NULL,
+  PRIMARY KEY (`idUsuario`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Perfil`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Perfil` (
+  `idPerfil` INT NOT NULL AUTO_INCREMENT,
+  `nombreUsuario1` VARCHAR(150) NOT NULL,
+  `nombreUsuario2` VARCHAR(150) NOT NULL,
+  `fotoPerfil` VARCHAR(150) NULL,
+  `Usuario_idUsuario` INT NOT NULL,
+  PRIMARY KEY (`idPerfil`),
+  INDEX `fk_Perfil_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Perfil_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Publicaciones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Publicaciones` (
+  `idPublicaciones` INT NOT NULL AUTO_INCREMENT,
+  `estadosPubl` VARCHAR(500) NULL,
+  `fotosPubl` VARCHAR(500) NULL,
+  `publicacionesTexto` VARCHAR(500) NOT NULL,
+  `videosPul` VARCHAR(500) NULL,
+  `linksPul` VARCHAR(150) NULL,
+  `FechaCump` DATE NULL,
+  `fotosPerfil` VARCHAR(45) NULL,
+  `Perfil_idPerfil` INT NOT NULL,
+  PRIMARY KEY (`idPublicaciones`),
+  INDEX `fk_Publicaciones_Perfil_idx` (`Perfil_idPerfil` ASC) VISIBLE,
+  CONSTRAINT `fk_Publicaciones_Perfil`
+    FOREIGN KEY (`Perfil_idPerfil`)
+    REFERENCES `mydb`.`Perfil` (`idPerfil`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

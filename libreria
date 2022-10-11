@@ -1,0 +1,131 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Generos Literarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Generos Literarios` (
+  `idGeneros Literarios` INT NOT NULL AUTO_INCREMENT,
+  `descripcionLiterarios` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`idGeneros Literarios`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Autores`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Autores` (
+  `idAutores` INT NOT NULL AUTO_INCREMENT,
+  `nombreAutor` VARCHAR(150) NOT NULL,
+  `apellidoAutor` VARCHAR(150) NOT NULL,
+  `paisAutor` VARCHAR(150) NOT NULL,
+  `fechaNace` DATE NULL,
+  `fechaMuerte` DATE NULL,
+  `sitioWeb` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`idAutores`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Editoriales`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Editoriales` (
+  `idEditoriales` INT NOT NULL AUTO_INCREMENT,
+  `nombreEditorial` VARCHAR(150) NOT NULL,
+  `direccionEditorial` VARCHAR(150) NOT NULL,
+  `telefonoEditorial` VARCHAR(150) NOT NULL,
+  `emailEditorial` VARCHAR(45) NOT NULL,
+  `sitioWeb` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idEditoriales`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
+  `NombreUsuario` VARCHAR(150) NOT NULL,
+  `ApellidoUsuario` VARCHAR(150) NOT NULL,
+  `direccionUsuario` VARCHAR(150) NOT NULL,
+  `telefonoUsuario` VARCHAR(150) NOT NULL,
+  `emailUsuario` VARCHAR(150) NOT NULL,
+  `fechaNace` DATE NULL,
+  PRIMARY KEY (`idUsuario`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Prestamo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Prestamo` (
+  `idPrestamo` INT NOT NULL AUTO_INCREMENT,
+  `FechaPrestamo` DATE NULL,
+  `FechaEntrega` DATE NULL,
+  `NOTAS` DATE NULL,
+  `Usuario_idUsuario` INT NOT NULL,
+  PRIMARY KEY (`idPrestamo`),
+  INDEX `fk_Prestamo_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Prestamo_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Libros`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Libros` (
+  `idLibros` INT NOT NULL AUTO_INCREMENT,
+  `nombreLibro` VARCHAR(150) NOT NULL,
+  `cantidadLibro` VARCHAR(150) NOT NULL,
+  `Generos Literarios_idGeneros Literarios` INT NOT NULL,
+  `Autores_idAutores` INT NOT NULL,
+  `Editoriales_idEditoriales` INT NOT NULL,
+  `Prestamo_idPrestamo` INT NOT NULL,
+  PRIMARY KEY (`idLibros`),
+  INDEX `fk_Libros_Generos Literarios_idx` (`Generos Literarios_idGeneros Literarios` ASC) VISIBLE,
+  INDEX `fk_Libros_Autores1_idx` (`Autores_idAutores` ASC) VISIBLE,
+  INDEX `fk_Libros_Editoriales1_idx` (`Editoriales_idEditoriales` ASC) VISIBLE,
+  INDEX `fk_Libros_Prestamo1_idx` (`Prestamo_idPrestamo` ASC) VISIBLE,
+  CONSTRAINT `fk_Libros_Generos Literarios`
+    FOREIGN KEY (`Generos Literarios_idGeneros Literarios`)
+    REFERENCES `mydb`.`Generos Literarios` (`idGeneros Literarios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Libros_Autores1`
+    FOREIGN KEY (`Autores_idAutores`)
+    REFERENCES `mydb`.`Autores` (`idAutores`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Libros_Editoriales1`
+    FOREIGN KEY (`Editoriales_idEditoriales`)
+    REFERENCES `mydb`.`Editoriales` (`idEditoriales`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Libros_Prestamo1`
+    FOREIGN KEY (`Prestamo_idPrestamo`)
+    REFERENCES `mydb`.`Prestamo` (`idPrestamo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
